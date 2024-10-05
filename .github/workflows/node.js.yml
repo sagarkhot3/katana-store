@@ -28,6 +28,20 @@ jobs:
       - name: Build the app
         run: npm run build
 
+      # Step 5: Configure Git with your identity
+      - name: Set Git user identity
+        run: |
+          git config --global user.email "sagarkhot74@gmail.com"
+          git config --global user.name "sagarkhot3"
+
+      - name: Check secret
+        run: |
+          if [ -z "${{ secrets.ACTIONS_DEPLOY_KEY }}" ]; then
+            echo "Secret is empty or not set."
+          else
+            echo "Secret is set."
+          fi
+
       # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: |
