@@ -36,7 +36,7 @@ jobs:
 
       - name: Check secret
         run: |
-          if [ -z "${{ secrets.ACTIONS_DEPLOY_KEY }}" ]; then
+          if [ -z "${{ secrets.ACTIONS_DEPLOY_DEV }}" ]; then
             echo "Secret is empty or not set."
           else
             echo "Secret is set."
@@ -45,7 +45,7 @@ jobs:
       # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/${{ github.repository }}.git
+          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_DEPLOY_DEV }}@github.com/${{ github.repository }}.git
           npm run deploy
         env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_DEV }}
