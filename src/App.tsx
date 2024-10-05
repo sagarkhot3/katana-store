@@ -1,8 +1,8 @@
 function App() {
   return (
-    <>
-      <h1>This works but i dont know what happened here!!!</h1>
-    </>
+    <div className='header'>
+      <h1>Will be live soon.</h1>
+    </div>
   );
 }
 
