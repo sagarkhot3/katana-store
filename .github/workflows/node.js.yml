@@ -30,7 +30,7 @@ jobs:
 
       # Step 5: Verify that the build directory exists
       - name: Check build folder
-        run: ls build # This will list files in the build directory to ensure it exists
+        run: ls dist # This will list files in the build directory to ensure it exists
 
       # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
