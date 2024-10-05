@@ -28,17 +28,7 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      # Step 5: Configure Git with a user identity
-      - name: Set Git user identity
-        run: |
-          git config --global user.email "sagarkhot74@gmail.com"
-          git config --global user.name "sagarkhot3"
-
-      # Step 6: Verify the 'dist' folder
-      - name: Check dist folder
-        run: ls dist # List files in the 'dist' directory to ensure it exists
-
-      # Step 7: Deploy to GitHub Pages
+      # Step 5: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/${{ github.repository }}.git
