@@ -1,51 +1,50 @@
-name: Deploy Vite React App to GitHub Pages
+name: Deploy static content to Pages
 
 on:
+  # Runs on pushes targeting the default branch
   push:
-    branches:
-      - main # Or the branch you're using
+    branches: ['main']
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  # Single deploy job since we're just deploying
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Check out the repository code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          node-version: '20' # Specify the Node.js version you are using
-
-      # Step 3: Install dependencies
+          node-version: 20
+          cache: 'npm'
       - name: Install dependencies
-        run: npm install
-
-      # Step 4: Build the Vite React app
-      - name: Build the app
+        run: npm ci
+      - name: Build
         run: npm run build
-
-      # Step 5: Configure Git with your identity
-      - name: Set Git user identity
-        run: |
-          git config --global user.email "sagarkhot74@gmail.com"
-          git config --global user.name "sagarkhot3"
-
-      - name: Check secret
-        run: |
-          if [ -z "${{ secrets.ACTIONS_DEPLOY_DEV }}" ]; then
-            echo "Secret is empty or not set."
-          else
-            echo "Secret is set."
-          fi
-
-      # Step 5: Deploy to GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload dist folder
+          path: './dist'
       - name: Deploy to GitHub Pages
-        run: |
-          git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_DEPLOY_DEV }}@github.com/${{ github.repository }}.git
-          npm run deploy
-        env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_DEV }}
+        id: deployment
+        uses: actions/deploy-pages@v4
