@@ -1,24 +1,24 @@
-name: Deploy Katana Store to GitHub Pages
+name: Deploy React App to GitHub Pages
 
 on:
   push:
     branches:
-      - main
+      - main # Or the branch you're using
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the latest code from the repository
+      # Step 1: Checkout the latest code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Specify the Node.js version you want
+          node-version: '18'
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -28,7 +28,11 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      # Step 5: Deploy to GitHub Pages
+      # Step 5: Verify that the build directory exists
+      - name: Check build folder
+        run: ls build # This will list files in the build directory to ensure it exists
+
+      # Step 6: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         run: npm run deploy
         env:
